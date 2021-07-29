@@ -1,0 +1,21 @@
+local additional_fieldsArr = if std.objectHas(payload.data, "additional_fields")
+                             then payload.data.additional_fields else [];
+
+local firstNameFilter = std.filter(function(i) i.key == "first_name", additional_fieldsArr);
+local firstName = if (firstNameFilter != []) then firstNameFilter[0].value else null;
+
+local lastNameFilter = std.filter(function(i) i.key == "last_name", additional_fieldsArr);
+local lastName = if (lastNameFilter != []) then lastNameFilter[0].value else null;
+
+local displayName = if lastName != null
+                    then firstName + " " + lastName
+                    else (if firstName != null then firstName else null);
+
+{
+  "type": "CONSUMER",
+  "idType": cml.header('idType'),
+  "idValue": cml.header('idValue'),
+  "firstName": firstName,
+  "lastName": lastName,
+  "displayName": displayName
+}

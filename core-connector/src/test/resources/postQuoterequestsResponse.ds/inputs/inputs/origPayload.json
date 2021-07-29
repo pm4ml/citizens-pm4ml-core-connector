@@ -1,0 +1,18 @@
+{
+  "quoteId": "ddaa67b3-5bf8-45c1-bfcf-1e8781177c37",
+  "transactionId": "97f3f215-37a0-4755-a17c-c39313aa2f98",
+  "to": {
+    "idType": "MSISDN",
+    "idValue": "44123456789"
+  },
+  "from": {
+    "idType": "MSISDN",
+    "idValue": "44123456789"
+  },
+  "amountType": "SEND",
+  "amount": "100",
+  "currency": "MMK",
+  "transactionType": "TRANSFER",
+  "initiator": "PAYER",
+  "initiatorType": "CONSUMER"
+}

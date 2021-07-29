@@ -1,0 +1,36 @@
+{
+  "from": {
+    "displayName": "PayerFirst PayerLast",
+    "idType": "MSISDN",
+    "idValue": "17855501914"
+  },
+  "to": {
+    "idType": "MSISDN",
+    "idValue": "17039811907",
+    "extensionList": [
+      {
+        "key": "loanAmount",
+        "value": "1000000"
+      },
+      {
+        "key": "drawdownAccount",
+        "value": "DD000019"
+      }
+    ],
+    "fspId": "payeefsp",
+    "firstName": "SimFirst",
+    "middleName": "SimMiddle",
+    "lastName": "SimLast",
+    "dateOfBirth": "2010-10-10"
+  },
+  "amountType": "SEND",
+  "currency": "USD",
+  "amount": "10",
+  "transactionType": "TRANSFER",
+  "initiatorType": "CONSUMER",
+  "note": "test payment",
+  "homeTransactionId": "22246c11-46e9-4240-8c6d-cfe86237a3ca",
+  "transferId": "673a1aee-8c9f-4d05-8e7f-004791e53e91",
+  "currentState": "WAITING_FOR_PARTY_ACCEPTANCE",
+  "initiatedTimestamp": "2021-06-03T10:30:08.742Z"
+}

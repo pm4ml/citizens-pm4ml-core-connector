@@ -1,0 +1,29 @@
+{
+  "response_code": "200200",
+  "status": "SUCCESS",
+  "status_message": "Transaction is successful!",
+  "internal_message": "Success",
+  "date_time_utc": "2021-07-19T14:12:14.492Z",
+  "data": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzY29wZSI6WyJ5dF90cF9vcHMiXSwiZXhwIjoxNjI2NzA0MTE0LCJqdGkiOiJiZDJkYmUyOS04MjZmLTQ0MjktOTJiYi0zOTIyNWUzOGY4ZjYiLCJjbGllbnRfaWQiOiJoMmhfdGVzdCJ9.DigOkB8UW-cbBP26MjPegvdf_98K3jNliAXermIrzCJIcG86GupBqd-Ed5C6dlMF3iG3X7z4xXej1CACHt9aWZJ66HMv5Rgaimh4ifEkmEJsZ1i7Tz5Vh9k-Z9WM9Am5tnPGE6aR7Wk56-QTIxmPBsbiH-H6yzb2FPUUItVIGh2idPAzpenURqlwi3S7YGSxnjL69fRmnd4xRYAKljw_9hfEuixwf1n8CPxpFjVqjmtF831Q14SX25fdDZDsOzE73MLHCBjP9JAY9kQcHXs0VD7q1ezopxOI6EkW_N7qzRDnh2qg2Ba9M7dyiSmPbT19NDlF0jZlSHX1pc59xlsQQA",
+    "requestor_id": 44260,
+    "additional_fields": [
+      {
+        "key": "first_name",
+        "value": "ကောင်းထက်စံ"
+      },
+      {
+        "key": "middle_name",
+        "value": ""
+      },
+      {
+        "key": "last_name",
+        "value": ""
+      },
+      {
+        "key": "identity_id",
+        "value": "14/ZaLaNa(N)154310"
+      }
+    ]
+  }
+}

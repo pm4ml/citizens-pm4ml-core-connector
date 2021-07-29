@@ -1,0 +1,28 @@
+local origPayload = cml.exchangeProperty('origPayload');
+local transactionId = if (std.objectHas(origPayload, "transactionId") && origPayload.transactionId != null)
+                      then origPayload.transactionId
+                      else origPayload.quote.transactionId;
+
+{
+  "type":"CITIZEN",
+  "api_caller":"GnG",
+  "transaction_refno": transactionId,
+  "agent_account": cml.properties('dfsp.username'),
+  "deposit_account":  origPayload.to.idValue,
+  "token": cml.exchangeProperty('authToken'),
+  "amount": origPayload.amount,
+  "additional_fields":[
+    {
+      "key":"casherId",
+      "value":"001"
+    },
+    {
+      "key":"storeCode",
+      "value":"000"
+    },
+    {
+      "key":"province",
+      "value":"yangon"
+    }
+  ]
+}

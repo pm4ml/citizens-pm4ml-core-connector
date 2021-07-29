@@ -1,0 +1,24 @@
+local origPayload = cml.exchangeProperty('origPayload');
+
+local additional_fieldsArr = if std.objectHas(payload.data, "additional_fields")
+                             then payload.data.additional_fields else [];
+
+local feeFilter = std.filter(function(i) i.key == "fee", additional_fieldsArr);
+local fieldFilter(field, arr) = std.filter(function(i) i.key == field, arr);
+local fee = if (feeFilter != []) then feeFilter[0].value else null;
+
+local commissionFilter = std.filter(function(i) i.key == "commission", additional_fieldsArr);
+local commission = if (commissionFilter != []) then commissionFilter[0].value else null;
+
+{
+  "quoteId": origPayload.quoteId,
+  "transactionId": origPayload.transactionId,
+  "transferAmount": origPayload.amount,
+  "transferAmountCurrency": origPayload.currency,
+  "payeeReceiveAmount": origPayload.amount,
+  "payeeReceiveAmountCurrency": origPayload.currency,
+  "payeeFspFeeAmount": fee,
+  "payeeFspFeeAmountCurrency": origPayload.currency,
+  "payeeFspCommissionAmount": commission,
+  "payeeFspCommissionAmountCurrency": origPayload.currency,
+}

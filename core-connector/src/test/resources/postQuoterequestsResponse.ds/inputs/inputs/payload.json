@@ -1,0 +1,24 @@
+{
+  "response_code": "200200",
+  "status": "SUCCESS",
+  "status_message": "Transaction is successful!",
+  "internal_message": "Success",
+  "date_time_utc": "2021-07-19T14:12:17.437Z",
+  "data": {
+    "order_id": "0",
+    "additional_fields": [
+      {
+        "key": "fee",
+        "value": 0.0
+      },
+      {
+        "key": "commission",
+        "value": 0
+      },
+      {
+        "key": "settlement_amount",
+        "value": 1000.0
+      }
+    ]
+  }
+}

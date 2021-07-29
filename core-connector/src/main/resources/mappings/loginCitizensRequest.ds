@@ -1,0 +1,8 @@
+{
+  "type":"CITIZEN",
+  "api_caller":"GnG",
+  "agent_name": "h2h_test",
+  "agent_password": cml.properties('dfsp.password'),
+  "sender_phone": cml.header('idValue'),
+  "additional_fields": []
+}

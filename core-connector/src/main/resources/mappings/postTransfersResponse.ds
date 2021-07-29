@@ -1,0 +1,5 @@
+local origPayload = cml.exchangeProperty('origPayload');
+
+{
+  homeTransactionId: "1234-hardcode"
+}

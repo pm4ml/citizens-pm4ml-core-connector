@@ -1,0 +1,24 @@
+{
+  "from": {
+    "displayName": "PayerFirst PayerLast",
+    "idType": "ALIAS",
+    "idValue": "{{payerfspALIAS}}",
+    "extensionList": []
+  },
+  "to": {
+    "idType": "ALIAS",
+    "idValue": "{{payeefspALIAS}}",
+    "extensionList": [{
+      "key": "example",
+      "value": "string"
+    }]
+  },
+  "amountType": "SEND",
+  "currency": "{{currency}}",
+  "amount": "10",
+  "transactionType": "TRANSFER",
+  "initiatorType": "CONSUMER",
+  "note": "test payment",
+  "dueDate": "2021-06-06",
+  "transferId": "{{$guid}}"
+}
