@@ -7,7 +7,7 @@ import com.modusbox.client.model.TransferResponse;
 
 import javax.validation.constraints.Pattern;
 
-public class SendMoneyApiImpl implements SendmoneyApi {
+public class SendmoneyApiImpl implements SendmoneyApi {
 
     @Override
     public TransferResponse postSendMoney(TransferRequest transferRequest) {
