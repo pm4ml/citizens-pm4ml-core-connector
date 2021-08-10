@@ -38,7 +38,13 @@ public class CustomErrorProcessor implements Processor {
                         /* Below if block needs to be changed as per the error object structure specific to 
                             CBS back end API that is being integrated in Core Connector. */
                         JSONObject respObject = new JSONObject(e.getResponseBody());
-                        if (respObject.has("internal_message")) {
+                        if (respObject.has("message")) {
+//                            statusCode = String.valueOf(respObject.getInt("returnCode"));
+//                            errorDescription = respObject.getString("returnStatus");
+                            statusCode = respObject.getString("statusCode");
+                            errorDescription = respObject.getString("message");
+                        }
+                        else if (respObject.has("internal_message")) {
 //                            statusCode = String.valueOf(respObject.getInt("returnCode"));
 //                            errorDescription = respObject.getString("returnStatus");
                             statusCode = respObject.getString("response_code");

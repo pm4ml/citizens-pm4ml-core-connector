@@ -80,10 +80,10 @@ paths:
         content:
           application/json:
             schema:
-                $ref: '#/components/schemas/transferContinuationAccept'
-#              oneOf:
-#                - $ref: '#/components/schemas/transferContinuationAcceptParty'
-#                - $ref: '#/components/schemas/transferContinuationAcceptQuote'
+              $ref: '#/components/schemas/transferContinuationAccept'
+      #              oneOf:
+      #                - $ref: '#/components/schemas/transferContinuationAcceptParty'
+      #                - $ref: '#/components/schemas/transferContinuationAcceptQuote'
       parameters:
         - $ref: '#/components/parameters/transferId'
       responses:
@@ -550,7 +550,7 @@ components:
           properties:
             headers:
               type: object
-#              $ref: '#/components/schemas/clientHeaders'
+            #              $ref: '#/components/schemas/clientHeaders'
             body:
               $ref: '#/components/schemas/mojaloopQuoteRequestObject'
         quoteResponse:
@@ -558,11 +558,11 @@ components:
           properties:
             headers:
               type: object
-#              $ref: '#/components/schemas/serverHeaders'
+            #              $ref: '#/components/schemas/serverHeaders'
             body:
               type: string
-#              $ref: '#/components/schemas/mojaloopQuoteResponseObject'
-#              type: object
+        #              $ref: '#/components/schemas/mojaloopQuoteResponseObject'
+        #              type: object
         prepare:
           type: object
           properties:
@@ -589,25 +589,25 @@ components:
                 - amount
             headers:
               type: object
-#              $ref: '#/components/schemas/clientHeaders'
+        #              $ref: '#/components/schemas/clientHeaders'
         fulfil:
           type: object
           properties:
             headers:
               type: object
-#              $ref: '#/components/schemas/serverHeaders'
+            #              $ref: '#/components/schemas/serverHeaders'
             body:
               type: string
-#              type: object
-#              properties:
-#                completedTimestamp:
-#                  $ref: '#/components/schemas/timestamp'
-#                transferState:
-#                  $ref: '#/components/schemas/mojaloopTransferState'
-#                fulfilment:
-#                  $ref: '#/components/schemas/ilpFulfilment'
-#                extensionList:
-#                  $ref: '#/components/schemas/extensionList'
+        #              type: object
+        #              properties:
+        #                completedTimestamp:
+        #                  $ref: '#/components/schemas/timestamp'
+        #                transferState:
+        #                  $ref: '#/components/schemas/mojaloopTransferState'
+        #                fulfilment:
+        #                  $ref: '#/components/schemas/ilpFulfilment'
+        #                extensionList:
+        #                  $ref: '#/components/schemas/extensionList'
         quote:
           type: object
           properties:
@@ -1446,7 +1446,7 @@ components:
 
     transferResponseInbound:
       type: object
-        #required:
+      #required:
       #- homeTransactionId
       properties:
         homeTransactionId:

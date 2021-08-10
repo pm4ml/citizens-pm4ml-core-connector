@@ -30,7 +30,7 @@ public class QuotesRouter extends RouteBuilder {
 		// Add custom global exception handling strategy
 		exception.configureExceptionHandling(this);
 
-		from("direct:postQuoteRequests").routeId(ROUTE_ID).doTry()
+		from("direct:postQuoteRequests").routeId(ROUTE_ID)
 				.process(exchange -> {
 					requestCounter.inc(1); // increment Prometheus Counter metric
 					exchange.setProperty(TIMER_NAME, requestLatency.startTimer()); // initiate Prometheus Histogram metric
@@ -78,7 +78,7 @@ public class QuotesRouter extends RouteBuilder {
 				 */
 				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
 						"'Send response, " + ROUTE_ID + "', null, null, 'Output Payload: ${body}')") // default logging
-				.doFinally().process(exchange -> {
+				.process(exchange -> {
 					((Histogram.Timer) exchange.getProperty(TIMER_NAME)).observeDuration(); // stop Prometheus Histogram metric
 				})
 		;

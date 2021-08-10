@@ -45,7 +45,7 @@ public class TransfersRouter extends RouteBuilder {
         // Add custom global exception handling strategy
         exception.configureExceptionHandling(this);
 
-        from("direct:postTransfers").routeId(ROUTE_ID).doTry()
+        from("direct:postTransfers").routeId(ROUTE_ID)
                 .process(exchange -> {
                     requestCounter.inc(1); // increment Prometheus Counter metric
                     exchange.setProperty(TIMER_NAME, requestLatency.startTimer()); // initiate Prometheus Histogram metric
@@ -90,12 +90,12 @@ public class TransfersRouter extends RouteBuilder {
                  */
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Send response, " + ROUTE_ID + "', null, null, 'Output Payload: ${body}')") // default logging
-                .doFinally().process(exchange -> {
+                .process(exchange -> {
                     ((Histogram.Timer) exchange.getProperty(TIMER_NAME)).observeDuration(); // stop Prometheus Histogram metric
                 }).end()
         ;
 
-        from("direct:putTransfersByTransferId").routeId(ROUTE_ID_PUT).doTry()
+        from("direct:putTransfersByTransferId").routeId(ROUTE_ID_PUT)
                 .process(exchange -> {
                     requestCounterPut.inc(1); // increment Prometheus Counter metric
                     exchange.setProperty(TIMER_NAME_PUT, requestLatencyPut.startTimer()); // initiate Prometheus Histogram metric
@@ -144,7 +144,7 @@ public class TransfersRouter extends RouteBuilder {
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Final Response: ${body}', " +
                         "null, null, 'Response of PUT /transfers/${header.transferId} API')")
-                .doFinally().process(exchange -> {
+                .process(exchange -> {
                     ((Histogram.Timer) exchange.getProperty(TIMER_NAME_PUT)).observeDuration(); // stop Prometheus Histogram metric
                 }).end()
         ;

@@ -6,7 +6,7 @@ import io.prometheus.client.Histogram;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 
-public class SendmoneyRouter extends RouteBuilder {
+public class SendMoneyRouter extends RouteBuilder {
 
     private static final String TIMER_NAME_POST = "histogram_post_sendmoney_timer";
     private static final String TIMER_NAME_PUT = "histogram_put_sendmoney_by_id_timer";
@@ -36,7 +36,7 @@ public class SendmoneyRouter extends RouteBuilder {
         // Add our global exception handling strategy
         exceptionHandlingConfigurer.configureExceptionHandling(this);
 
-        from("direct:postSendMoney").routeId("com.modusbox.postSendMoney").doTry()
+        from("direct:postSendMoney").routeId("com.modusbox.postSendMoney")
                 .process(exchange -> {
                     reqCounterPost.inc(1); // increment Prometheus Counter metric
                     exchange.setProperty(TIMER_NAME_POST, reqLatencyPost.startTimer()); // initiate Prometheus Histogram metric
@@ -78,9 +78,9 @@ public class SendmoneyRouter extends RouteBuilder {
                 .setProperty("postSendMoneyInitial", body())
                 // Send request to accept the party instead of hard coding AUTO_ACCEPT_PARTY: true
                 .to("direct:putTransfersAcceptParty")
-                .doFinally().process(exchange -> {
-                    ((Histogram.Timer) exchange.getProperty(TIMER_NAME_POST)).observeDuration(); // stop Prometheus Histogram metric
-                }).end()
+                .process(exchange -> {
+            ((Histogram.Timer) exchange.getProperty(TIMER_NAME_POST)).observeDuration(); // stop Prometheus Histogram metric
+        }).end()
         ;
 
         from("direct:putTransfersAcceptParty")
@@ -109,7 +109,7 @@ public class SendmoneyRouter extends RouteBuilder {
                         "'Tracking the response', 'Verify the response', null)")
         ;
 
-        from("direct:putSendMoneyByTransferId").routeId("com.modusbox.putSendMoneyByTransferId").doTry()
+        from("direct:putSendMoneyByTransferId").routeId("com.modusbox.putSendMoneyByTransferId")
                 .process(exchange -> {
                     reqCounterPut.inc(1); // increment Prometheus Counter metric
                     exchange.setProperty(TIMER_NAME_PUT, reqLatencyPut.startTimer()); // initiate Prometheus Histogram metric
@@ -155,9 +155,9 @@ public class SendmoneyRouter extends RouteBuilder {
                         "'Tracking the response', " +
                         "null, " +
                         "'Output Payload: ${body}')")
-                .doFinally().process(exchange -> {
-                    ((Histogram.Timer) exchange.getProperty(TIMER_NAME_PUT)).observeDuration(); // stop Prometheus Histogram metric
-                }).end()
+                .process(exchange -> {
+            ((Histogram.Timer) exchange.getProperty(TIMER_NAME_PUT)).observeDuration(); // stop Prometheus Histogram metric
+        }).end()
         ;
     }
 }

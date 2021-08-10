@@ -9,7 +9,7 @@ local newExtensionList = if std.objectHas(payload.to, "extensionList")
 local newFrom = {"from": std.prune(payload.from)};
 local newTo = {"to": std.prune(payload.to)};
 //local newTo = {"to": std.prune(payload.to + newExtensionList)};
-local newPayload = DS.Util.removeAll(payload, ["to", "from", "dueDate"]);
+local newPayload = ds.remove(payload, ["to", "from", "dueDate"]);
 
 (newFrom + newTo) + newPayload
 
