@@ -88,7 +88,7 @@
         <dependency>
             <groupId>com.datasonnet</groupId>
             <artifactId>datasonnet-mapper</artifactId>
-            <version>2.1.2</version>
+            <version>${datasonnet.version}</version>
         </dependency>
 
 		<dependency>
@@ -198,25 +198,25 @@
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient</artifactId>
-            <version>0.10.0</version>
+            <version>${prometheus-client.version}</version>
         </dependency>
         <!-- Hotspot JVM metrics-->
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_hotspot</artifactId>
-            <version>0.10.0</version>
+            <version>${prometheus-client.version}</version>
         </dependency>
         <!-- Exposition HTTPServer-->
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_httpserver</artifactId>
-            <version>0.10.0</version>
+            <version>${prometheus-client.version}</version>
         </dependency>
         <!-- Pushgateway exposition-->
         <dependency>
             <groupId>io.prometheus</groupId>
             <artifactId>simpleclient_pushgateway</artifactId>
-            <version>0.10.0</version>
+            <version>${prometheus-client.version}</version>
         </dependency>
         <!-- Prometheus -->
 
