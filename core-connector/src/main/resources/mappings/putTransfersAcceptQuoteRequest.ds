@@ -1,1 +1,3 @@
-std.prune(payload)
+{
+  "acceptQuote": payload.acceptQuote
+}

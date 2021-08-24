@@ -57,10 +57,10 @@ public class SendMoneyRouter extends RouteBuilder {
 
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Calling outbound API, postTransfers, " +
-                        "POST {{outbound.endpoint}}', " +
+                        "POST {{ml-conn.outbound.host}}', " +
                         "'Tracking the request', 'Track the response', 'Input Payload: ${body}')")
 
-                .toD("{{outbound.endpoint}}/transfers?bridgeEndpoint=true")
+                .toD("{{ml-conn.outbound.host}}/transfers?bridgeEndpoint=true")
                 .unmarshal().json()
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Response from outbound API, postTransfers: ${body}', " +
@@ -87,11 +87,11 @@ public class SendMoneyRouter extends RouteBuilder {
 
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Calling outbound API, putTransfersAcceptParty, " +
-                        "PUT {{outbound.endpoint}}/transfers/${exchangeProperty.postSendMoneyInitial?.get('transferId')}', " +
+                        "PUT {{ml-conn.outbound.host}}/transfers/${exchangeProperty.postSendMoneyInitial?.get('transferId')}', " +
                         "'Tracking the request', 'Track the response', 'Input Payload: ${body}')")
 //                .marshal().json()
                 // Instead of having to do a DataSonnet transformation
-                .toD("{{outbound.endpoint}}/transfers/${exchangeProperty.postSendMoneyInitial?.get('transferId')}?bridgeEndpoint=true")
+                .toD("{{ml-conn.outbound.host}}/transfers/${exchangeProperty.postSendMoneyInitial?.get('transferId')}?bridgeEndpoint=true")
                 .unmarshal().json()
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Response from outbound API, putTransfersAcceptParty: ${body}', " +
@@ -113,16 +113,16 @@ public class SendMoneyRouter extends RouteBuilder {
 
                 // Will convert to JSON and only take the accept quote section
                 .marshal().json()
-                .transform(datasonnet("resource:classpath:mappings/putTransfersAcceptQuoteRequest.ds"))
+                .transform(datasonnet("resource:classpath:mappings/putTransfersAcceptRequest.ds"))
                 .setBody(simple("${body.content}"))
                 .marshal().json()
 
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Calling outbound API, putTransfersById', " +
                         "'Tracking the request', 'Track the response', " +
-                        "'Request sent to PUT {{outbound.endpoint}}/transfers/${header.transferId}')")
+                        "'Request sent to PUT {{ml-conn.outbound.host}}/transfers/${header.transferId}')")
 //                .marshal().json()
-                .toD("{{outbound.endpoint}}/transfers/${header.transferId}?bridgeEndpoint=true")
+                .toD("{{ml-conn.outbound.host}}/transfers/${header.transferId}?bridgeEndpoint=true")
                 .unmarshal().json()
                 .to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
                         "'Response from outbound API, putTransfersById: ${body}', " +
