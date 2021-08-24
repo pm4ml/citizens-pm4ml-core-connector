@@ -1,8 +1,8 @@
 // Move dueDate as extensionList item
 local dueDate = {"key": "dueDate", "value": payload.dueDate};
 local newExtensionList = if std.objectHas(payload.to, "extensionList")
-  then {"extensionList": [dueDate] + payload.to.extensionList}
-  else {"extensionList": [dueDate]};
+                         then {"extensionList": [dueDate] + payload.to.extensionList}
+                         else {"extensionList": [dueDate]};
 
 // Recursively remove all "empty" members of payload.
 // "Empty" is defined as zero length `arrays`, zero length `objects`, or `null` values.

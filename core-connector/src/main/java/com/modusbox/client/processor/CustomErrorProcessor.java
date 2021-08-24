@@ -41,7 +41,8 @@ public class CustomErrorProcessor implements Processor {
                         if (respObject.has("message")) {
 //                            statusCode = String.valueOf(respObject.getInt("returnCode"));
 //                            errorDescription = respObject.getString("returnStatus");
-                            statusCode = respObject.getString("statusCode");
+                            statusCode = String.valueOf(respObject.getInt("statusCode"));
+//                            statusCode = respObject.getString("statusCode");
                             errorDescription = respObject.getString("message");
                         }
                         else if (respObject.has("internal_message")) {
