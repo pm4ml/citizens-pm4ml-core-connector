@@ -23,14 +23,14 @@ camel:
 ### (java -Ddfsp.host=... -Ddfsp.username=... -jar core-connector.jar) into Dockerfile
 
 ### properties for DFSP connection
-#dfsp:
-#  host: https://localhost/api
-#  username: user
-#  password: pass
-#  api-key: key
-#  api-version: v1
+dfsp:
+  host: https://localhost/api
+  username: user
+  password: pass
+  api-key: key
+  api-version: v1
 
 ### properties for Mojaloop Connector connection
-#ml-conn:
-#  outbound:
-#    host:  http://localhost:3004
+ml-conn:
+  outbound:
+    host:  http://localhost:3004

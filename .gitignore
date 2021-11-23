@@ -31,3 +31,4 @@ build/
 .vscode/
 
 core-connector/previous\ build/
+/core-connector/src/main/resources/application_local.yml

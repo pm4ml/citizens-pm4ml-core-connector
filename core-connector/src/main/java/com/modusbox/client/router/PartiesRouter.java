@@ -13,7 +13,7 @@ public class PartiesRouter extends RouteBuilder {
 	private final RouteExceptionHandlingConfigurer exception = new RouteExceptionHandlingConfigurer();
 	private final TrimMFICode trimMFICode = new TrimMFICode();
 
-	private static final String ROUTE_ID = "com.modusbox.getParties";
+	private static final String ROUTE_ID = "com.modusbox.getPartiesByIdTypeIdValue";
 	private static final String ROUTE_ID_LOGIN = "com.modusbox.loginCitizens";
 	private static final String COUNTER_NAME = "counter_get_parties_requests";
 	private static final String TIMER_NAME = "histogram_get_parties_timer";
@@ -27,6 +27,22 @@ public class PartiesRouter extends RouteBuilder {
 	private static final Histogram requestLatency = Histogram.build()
 			.name(HISTOGRAM_NAME)
 			.help("Request latency in seconds for GET /parties.")
+			.register();
+
+	// Prometheus metrics for GET /parties/{idType}/{idValue}/{idSubValue}
+	private static final String ROUTE_ID_SUB = "com.modusbox.getPartiesByIdTypeIdValueSubIdValue";
+	private static final String COUNTER_NAME_SUB = "counter_get_parties_subId_requests";
+	private static final String TIMER_NAME_SUB = "histogram_get_parties_subId_timer";
+	private static final String HISTOGRAM_NAME_SUB = "histogram_get_parties_subId_requests_latency";
+
+	public static final Counter requestCounterSub = Counter.build()
+			.name(COUNTER_NAME_SUB)
+			.help("Total requests for GET /parties/{idType}/{idValue}/{idSubValue}.")
+			.register();
+
+	private static final Histogram requestLatencySub = Histogram.build()
+			.name(HISTOGRAM_NAME_SUB)
+			.help("Request latency in seconds for GET /parties/{idType}/{idValue}/{idSubValue}.")
 			.register();
 
 	public void configure() {
@@ -45,7 +61,7 @@ public class PartiesRouter extends RouteBuilder {
 				 * BEGIN processing
 				 */
 				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
-						"'Calling DFSP API, getParties', " +
+						"'Calling DFSP API, getPartiesByIdTypeIdValue', " +
 						"'Tracking the request', 'Track the response', " +
 						"'Request sent to, POST {{dfsp.host}}/emoney/login/{{dfsp.api-version}}')")
 
@@ -62,7 +78,7 @@ public class PartiesRouter extends RouteBuilder {
 
 
 				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
-						"'Response from DFSP API, getParties: ${body}', " +
+						"'Response from DFSP API, getPartiesByIdTypeIdValue: ${body}', " +
 						"'Tracking the response', 'Verify the response', null)")
 				/*
 				 * END processing
@@ -73,6 +89,47 @@ public class PartiesRouter extends RouteBuilder {
 					((Histogram.Timer) exchange.getProperty(TIMER_NAME)).observeDuration(); // stop Prometheus Histogram metric
 				}).end()
 		;
+
+//		from("direct:getPartiesByIdTypeIdValueIdSubValue").routeId(ROUTE_ID_SUB)
+//				.process(exchange -> {
+//					requestCounterSub.inc(1); // increment Prometheus Counter metric
+//					exchange.setProperty(TIMER_NAME_SUB, requestLatencySub.startTimer()); // initiate Prometheus Histogram metric
+//				})
+//				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
+//						"'Request received, " + ROUTE_ID_SUB + "', null, null, null)") // default logging
+//				/*
+//				 * BEGIN processing
+//				 */
+//				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
+//						"'Calling DFSP API, getPartiesByIdTypeIdValueIdSubValue', " +
+//						"'Tracking the request', 'Track the response', " +
+//						"'Request sent to, POST {{dfsp.host}}/emoney/login/{{dfsp.api-version}}')")
+//
+//				// Trim MFI code from id
+//				// since it's MSISDN - don't trim
+//				//.process(trimMFICode)
+//
+//				// Login and fetch customer information and login
+//				.to("direct:loginCitizens")
+//				.marshal().json()
+//				.transform(datasonnet("resource:classpath:mappings/getPartiesResponse.ds"))
+//				.setBody(simple("${body.content}"))
+//				.marshal().json()
+//
+//
+//				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
+//						"'Response from DFSP API, getPartiesByIdTypeIdValueIdSubValue: ${body}', " +
+//						"'Tracking the response', 'Verify the response', null)")
+//				/*
+//				 * END processing
+//				 */
+//				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +
+//						"'Send response, " + ROUTE_ID_SUB + "', null, null, 'Output Payload: ${body}')") // default logging
+//				.process(exchange -> {
+//					((Histogram.Timer) exchange.getProperty(TIMER_NAME_SUB)).observeDuration(); // stop Prometheus Histogram metric
+//				}).end()
+//		;
+
 
 		from("direct:loginCitizens").routeId(ROUTE_ID_LOGIN)
 				.to("bean:customJsonMessage?method=logJsonMessage('info', ${header.X-CorrelationId}, " +

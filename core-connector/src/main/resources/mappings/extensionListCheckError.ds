@@ -1,0 +1,8 @@
+local extensionList = if (std.objectHas(payload.to, "extensionList") && payload.to.extensionList != null) then payload.to.extensionList else [];
+local extensionMessage = ds.filter(extensionList,
+     function(value, index) value.key == "errorMessage"
+);
+
+if extensionMessage != []
+then ({"statusCode": "3241","message": extensionMessage[0].value})
+else payload
