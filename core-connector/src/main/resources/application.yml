@@ -33,4 +33,4 @@ dfsp:
 ### properties for Mojaloop Connector connection
 ml-conn:
   outbound:
-    host:  http://localhost:3004
+    host:  http://localhost:4001

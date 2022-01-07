@@ -12,6 +12,11 @@ import javax.validation.constraints.Pattern;
 public class TransfersApiImpl implements TransfersApi {
 
     @Override
+    public MojaloopTransferState getTransfersByTransferId(@Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$") String transferId) {
+        return null;
+    }
+
+    @Override
     public TransferResponseInbound postTransfers(TransferRequestInbound transferRequestInbound) {
         return null;
     }
@@ -21,13 +26,4 @@ public class TransfersApiImpl implements TransfersApi {
         return null;
     }
 
-//    @Override
-//    public void putTransfersByTransferId(@Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$") String transferId, @Valid FulfilNotification fulfilNotification) {
-//        // No need to return null as method is void
-//    }
-
-    @Override
-    public MojaloopTransferState getTransfersByTransferId(@Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$") String transferId) {
-        return null;
-    }
 }
