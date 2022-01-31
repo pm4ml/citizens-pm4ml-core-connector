@@ -1,0 +1,6 @@
+{
+"statusCode": cml.exchangeProperty("statusCode"),
+"message": cml.exchangeProperty("friendlyErrorMessage"),
+"localeMessage" : cml.exchangeProperty("errorMessageLocale"),
+"detailedDescription": cml.exchangeProperty("detailedDescription")
+}

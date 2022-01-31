@@ -29,6 +29,7 @@ dfsp:
   password: pass
   api-key: key
   api-version: v1
+  locale: my
 
 ### properties for Mojaloop Connector connection
 ml-conn:

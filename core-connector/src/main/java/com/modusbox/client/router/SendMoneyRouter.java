@@ -1,6 +1,7 @@
 package com.modusbox.client.router;
 
 import com.modusbox.client.exception.RouteExceptionHandlingConfigurer;
+import com.modusbox.client.processor.SetErrorMessagesForInactiveLoans;
 import io.prometheus.client.Counter;
 import io.prometheus.client.Histogram;
 import org.apache.camel.Exchange;
@@ -31,6 +32,7 @@ public class SendMoneyRouter extends RouteBuilder {
             .register();
 
     private final RouteExceptionHandlingConfigurer exceptionHandlingConfigurer = new RouteExceptionHandlingConfigurer();
+    private final SetErrorMessagesForInactiveLoans setErrorMessagesForInactiveLoans = new SetErrorMessagesForInactiveLoans();
 
     public void configure() {
         // Add our global exception handling strategy
@@ -48,6 +50,8 @@ public class SendMoneyRouter extends RouteBuilder {
                 .removeHeaders("CamelHttp*")
                 .setHeader(Exchange.HTTP_METHOD, constant("POST"))
                 .setHeader("Content-Type", constant("application/json"))
+                .setProperty("locale", constant("{{dfsp.locale}}"))
+                .log("Locale in Router: {{dfsp.locale}}")
 
                 // Prune empty items from the request
                 .marshal().json()
@@ -87,6 +91,8 @@ public class SendMoneyRouter extends RouteBuilder {
                 .removeHeaders("CamelHttp*")
                 .setHeader(Exchange.HTTP_METHOD, constant("PUT"))
                 .setHeader("Content-Type", constant("application/json"))
+                .setProperty("locale", constant("{{dfsp.locale}}"))
+                .log("Locale in Router: {{dfsp.locale}}")
 
                 .marshal().json()
                 .transform(datasonnet("resource:classpath:mappings/putTransfersAcceptPartyRequest.ds"))
@@ -118,6 +124,8 @@ public class SendMoneyRouter extends RouteBuilder {
                 .removeHeaders("CamelHttp*")
                 .setHeader(Exchange.HTTP_METHOD, constant("PUT"))
                 .setHeader("Content-Type", constant("application/json"))
+                .setProperty("locale", constant("{{dfsp.locale}}"))
+                .log("Locale in Router: {{dfsp.locale}}")
 
                 // Will convert to JSON and only take the accept quote section
                 .marshal().json()
@@ -142,7 +150,6 @@ public class SendMoneyRouter extends RouteBuilder {
 
         from("direct:extensionListCheckError")
                 .routeId("com.modusbox.extensionListCheckError")
-
                 // Check for account closed/written off message from CBS
                 .marshal().json()
                 .transform(datasonnet("resource:classpath:mappings/extensionListCheckError.ds"))
@@ -150,8 +157,15 @@ public class SendMoneyRouter extends RouteBuilder {
 
                 // Conditional whether errorMessage was found
                 .choice()
-                .when(simple("${body.get('statusCode')} == '3241'"))
-                .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(409))
+                .when(simple("${body.get('statusCode')} == '3242'"))
+                    .setHeader(Exchange.HTTP_RESPONSE_CODE, constant(409))
+                    .marshal().json()
+                    .process(setErrorMessagesForInactiveLoans)
+
+                    .transform(datasonnet("resource:classpath:mappings/getInactiveAccountError.ds"))
+                    .setBody(simple("${body.content}"))
+
+                    .log("frinedlyMessage: ${exchangeProperty.friendlyErrorMessage}")
                 .end()
         ;
     }
