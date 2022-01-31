@@ -25,6 +25,8 @@ public final class CoreConnectorAPI extends RouteBuilder {
                 //.maximumRedeliveries(3).redeliveryDelay(250).backOffMultiplier(2).useExponentialBackOff()
 
                 .handled(true)
+                .setProperty("locale", constant("{{dfsp.locale}}"))
+                .log("Locale in Router: {{dfsp.locale}}")
                 .log("-- processing error")
                 .process(errorProcessor)
                 .log("-- error processing complete")
