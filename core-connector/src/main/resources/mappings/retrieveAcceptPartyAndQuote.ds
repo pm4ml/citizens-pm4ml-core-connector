@@ -1,0 +1,4 @@
+{
+  "acceptParty": payload.acceptParty,
+  "acceptQuote": payload.acceptQuote
+}
