@@ -102,7 +102,7 @@ public class CustomErrorProcessor implements Processor {
                                         errorMessageLocale = errorMessageLocale.replaceAll("XXXX", lastWord);
                                     }
                                     else {
-                                        System.out.println("There are not all digits in Rounding Value.");
+                                       // System.out.println("There are not all digits in Rounding Value.");
                                     }
 
                                 }
