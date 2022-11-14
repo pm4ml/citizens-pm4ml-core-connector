@@ -638,11 +638,13 @@ components:
               description: State of the transfer.
               example: COMMITTED
             extensionList:
-              $ref: '#/components/schemas/extensionList'
+              $ref: '#/components/schemas/extensionListComplex'
               description: Optional extension, specific to deployment.
           required:
             - completedTimestamp
             - transferState
+        homeTransactionId:
+          $ref: '#/components/schemas/homeTransactionId'
 
     geoCode:
       type: object
@@ -674,11 +676,23 @@ components:
       type: string
       enum:
         - MSISDN
+        - EMAIL
+        - PERSONAL_ID
+        - BUSINESS
+        - DEVICE
         - ACCOUNT_ID
+        - IBAN
+        - ALIAS
       description: Below are the allowed values for the enumeration.
-
         - MSISDN -  An MSISDN (Mobile Station International Subscriber Directory Number, that is, the phone number) is used as reference to a participant. The MSISDN identifier should be in international format according to the [ITU-T E.164 standard](https://www.itu.int/rec/T-REC-E.164/en). Optionally, the MSISDN may be prefixed by a single plus sign, indicating the international prefix.
         - ACCOUNT_ID - A bank account number or FSP account ID should be used as reference to a participant. The ACCOUNT_ID identifier can be in any format, as formats can greatly differ depending on country and FSP.
+        - EMAIL An email is used as reference to a participant. The format of the email should be according to the informational RFC 3696.
+        - PERSONAL_ID A personal identifier is used as reference to a participant. Examples of personal identification are passport number, birth certificate number, and national registration number. The identifier number is added in the PartyIdentifier element. The personal identifier type is added in the PartySubIdOrType element.
+        - BUSINESS A specific Business (for example, an organization or a company) is used as reference to a participant. The BUSINESS identifier can be in any format. To make a transaction connected to a specific username or bill number in a Business, the PartySubIdOrType element should be used.
+        - DEVICE A specific device (for example, a POS or ATM) ID connected to a specific business or organization is used as reference to a Party. For referencing a specific device under a specific business or organization, use the PartySubIdOrType element.
+        - ACCOUNT_ID A bank account number or FSP account ID should be used as reference to a participant. The ACCOUNT_ID identifier can be in any format, as formats  can greatly differ depending on country and FSP.
+        - IBAN A bank account number or FSP account ID is used as reference to a participant. The IBAN identifier can consist of up to 34 alphanumeric characters and should be entered without whitespace.
+        - ALIAS An alias is used as reference to a participant. The alias should be created in the FSP as an alternative reference to an account owner. Another example of an alias is a username in the FSP system. The ALIAS identifier can be in any format. It is also possible to use the PartySubIdOrType element for identifying an account under an Alias defined by the PartyIdentifier.
 
     idValue:
       type: string
@@ -904,6 +918,20 @@ components:
         - RESERVED The Switch has reserved the transfer.
         - COMMITTED The Switch has successfully performed the transfer.
         - ABORTED The Switch has aborted the transfer due a rejection or failure to perform the transfer.
+
+    mojaloopTransactionState:
+      type: string
+      enum:
+        - RECEIVED
+        - PENDING
+        - COMPLETED
+        - REJECTED
+      description: >
+        Below are the allowed values for the enumeration
+        - RECEIVED Payee FSP has received the transaction from the Payer FSP.
+        - PENDING Payee FSP has validated the transaction.
+        - COMPLETED Payee FSP has successfully performed the transaction.
+        - REJECTED Payee FSP has failed to perform the transaction.
 
     money:
       pattern: ^([0]|([1-9][0-9]{0,17}))([.][0-9]{0,3}[1-9])?$
@@ -1613,6 +1641,17 @@ components:
       properties:
         homeTransactionId:
           $ref: '#/components/schemas/homeTransactionId'
+        fulfilment:
+          $ref: '#/components/schemas/ilpFulfilment'
+          description: Fulfilment from the DFSP backend, used for testing purposes to inject an invalid fulfilment via a rule.
+        transferState:
+          $ref: '#/components/schemas/transferState'
+          description: Transfer state from the DFSP backend, used for testing purposes to inject an desired transfer state via a rule.
+          example: ABORTED
+        completedTimestamp:
+          $ref: '#/components/schemas/timestamp'
+          description: Completed timestamp from the DFSP backend, used for testing purposes to inject a given completed timestamp via a rule.
+          example: "2020-05-19T08:38:08.699-04:00"
 
     transferState:
       type: string
@@ -1631,13 +1670,14 @@ components:
         - WAITING_FOR_PARTY_ACCEPTANCE
         - WAITING_FOR_QUOTE_ACCEPTANCE
         - COMPLETED
+        - ABORTED
       description: >
         Below are the allowed values for the enumeration
         - ERROR_OCCURRED An error has occurred during the transfer process.
         - WAITING_FOR_PARTY_ACCEPTANCE `AUTO_ACCEPT_PARTY` is set to "false" and party information has been returned, waiting to be accepted by the Payer DFSP using a `PUT /sendmoney/{transferId}` request.
         - WAITING_FOR_QUOTE_ACCEPTANCE `AUTO_ACCEPT_QUOTE` is set to "false" and quote information has been returned, waiting to be accepted by the Payer DFSP using a `PUT /sendmoney/{transferId}` request.
         - COMPLETED The transfer has completed successfully.
-
+        - ABORTED The transfer has been ABORTED.
 
     transferStatusResponse:
       type: object
@@ -1700,10 +1740,23 @@ components:
         type: string
         enum:
           - MSISDN
+          - EMAIL
+          - PERSONAL_ID
+          - BUSINESS
+          - DEVICE
           - ACCOUNT_ID
+          - IBAN
+          - ALIAS
       description: Below are the allowed values for the enumeration.
         - MSISDN -  An MSISDN (Mobile Station International Subscriber Directory Number, that is, the phone number) is used as reference to a participant. The MSISDN identifier should be in international format according to the [ITU-T E.164 standard](https://www.itu.int/rec/T-REC-E.164/en). Optionally, the MSISDN may be prefixed by a single plus sign, indicating the international prefix.
         - ACCOUNT_ID - A bank account number or FSP account ID should be used as reference to a participant. The ACCOUNT_ID identifier can be in any format, as formats can greatly differ depending on country and FSP.
+        - EMAIL An email is used as reference to a participant. The format of the email should be according to the informational RFC 3696.
+        - PERSONAL_ID A personal identifier is used as reference to a participant. Examples of personal identification are passport number, birth certificate number, and national registration number. The identifier number is added in the PartyIdentifier element. The personal identifier type is added in the PartySubIdOrType element.
+        - BUSINESS A specific Business (for example, an organization or a company) is used as reference to a participant. The BUSINESS identifier can be in any format. To make a transaction connected to a specific username or bill number in a Business, the PartySubIdOrType element should be used.
+        - DEVICE A specific device (for example, a POS or ATM) ID connected to a specific business or organization is used as reference to a Party. For referencing a specific device under a specific business or organization, use the PartySubIdOrType element.
+        - ACCOUNT_ID A bank account number or FSP account ID should be used as reference to a participant. The ACCOUNT_ID identifier can be in any format, as formats  can greatly differ depending on country and FSP.
+        - IBAN A bank account number or FSP account ID is used as reference to a participant. The IBAN identifier can consist of up to 34 alphanumeric characters and should be entered without whitespace.
+        - ALIAS An alias is used as reference to a participant. The alias should be created in the FSP as an alternative reference to an account owner. Another example of an alias is a username in the FSP system. The ALIAS identifier can be in any format. It is also possible to use the PartySubIdOrType element for identifying an account under an Alias defined by the PartyIdentifier.
 
     idValue:
       name: idValue
